@@ -12,32 +12,28 @@
 #   include 'cron'
 #   class { 'cron': }
 
-class cron(
-  $job    => 'NONE',
-  $daily  => 'NONE',
-  $weekly => 'NONE',
-  $monthly => 'NONE',
-  hourly   => 'NONE',
-) {
+class cron {
   include cron::install
+$network_if_statics = hiera_hash('network::if::static',undef)
 
-  if $job != 'NONE' {
+  $job = hiera_hash('cron::job',undef)
+  if $job != undef {
     create_resources('cron::job', $job)
   }
 
-  if $daily != 'NONE' {
+  if $daily != undef {
     create_resources('cron::daily', $daily)
   }
 
-  if $weekly != 'NONE' {
+  if $weekly != undef {
     create_resources('cron::weekly', $weekly)
   }
 
-  if $monthly != 'NONE' {
+  if $monthly != undef {
     create_resources('cron::monthly', $monthly)
   }
 
-  if $hourly != 'NONE' {
+  if $hourly != undef {
     create_resources('cron::hourly', $hourly)
   }
 }
