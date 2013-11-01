@@ -14,11 +14,10 @@
 
 class cron {
   include cron::install
-$network_if_statics = hiera_hash('network::if::static',undef)
 
-  $job = hiera_hash('cron::job', undef)
-  if $job != undef {
-    create_resources('cron::job', $job)
+  $jobs = hiera_hash('cron::job', undef)
+  if $jobs != undef {
+    create_resources('cron::job', $jobs)
   }
 
   $daily = hiera_hash('cron::daily', undef)
